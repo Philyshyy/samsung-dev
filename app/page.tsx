@@ -1,8 +1,7 @@
 import { Container, Title, Filter, Topbar } from "@/components/shared";
 import { ProductCard } from "@/components/shared/product-card";
 import { prisma } from "@/prisma/prisma-client";
-import { Prisma } from "@prisma/client";
-type ProductItem = Prisma.ProductItemGetPayload<object>;
+import { ProductItem } from "@prisma/client";
 import { Suspense } from "react";
 
 export default async function Home() {
@@ -59,20 +58,17 @@ export default async function Home() {
           {/* Список товаров */}
           <div className="flex-1">
             <div className="grid grid-cols-4 gap-4">
-              {currentCategory.map(
-                (product) =>
-                  currentCategory.length > 0 && (
-                    <ProductCard
-                      key={product.id}
-                      id={product.id}
-                      name={product.name}
-                      price={product.items[0].price}
-                      imageUrl={product.imageUrl}
-                      colors={getColors(product.items)}
-                      storage={getStorage(product.items)}
-                    />
-                  )
-              )}
+              {currentCategory.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  id={product.id}
+                  name={product.name}
+                  price={product.items[0].price}
+                  imageUrl={product.imageUrl}
+                  colors={getColors(product.items)}
+                  storage={getStorage(product.items)}
+                />
+              ))}
             </div>
           </div>
         </div>
