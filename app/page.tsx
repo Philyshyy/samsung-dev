@@ -1,7 +1,8 @@
 import { Container, Title, Filter, Topbar } from "@/components/shared";
 import { ProductCard } from "@/components/shared/product-card";
 import { prisma } from "@/prisma/prisma-client";
-import { ProductItem } from "@prisma/client";
+import { Prisma } from "@prisma/client";
+type ProductItem = Prisma.ProductItemGetPayload<object>;
 import { Suspense } from "react";
 
 export default async function Home() {
