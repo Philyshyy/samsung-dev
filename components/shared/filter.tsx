@@ -4,7 +4,7 @@ import React from "react";
 import { RangeSlider, Title, CheckboxFilterGroup } from "@/components/shared";
 import { cn } from "@/lib/utils";
 import { ChevronUp } from "lucide-react";
-import { Input } from "../ui";
+import { Button, Input } from "../ui";
 import { useQuery, useSeries, useFilters } from "@/hooks";
 import { shoppingPhone } from "./constants";
 
@@ -96,6 +96,9 @@ export const Filter = ({ className }: Props) => {
             onValueChange={updatePrices}
           />
 
+          <Button variant="secondary" className="w-44 mt-4">
+            Submit
+          </Button>
           <hr className="w-full h-[1px] bg-darkgrey mt-5" />
         </div>
 
