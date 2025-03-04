@@ -3,75 +3,33 @@
 import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import qs from "qs";
 
 interface Props {
   className?: string;
 }
 
-interface Filters {
-  prices: {
-    priceFrom: string | null;
-    priceTo: string | null;
-  };
-  selectedShopping: Set<string>;
-  selectedSeries: Set<string>;
-  selectedStorage: Set<string>;
-}
-
 export const Categories: React.FC<Props> = () => {
   const searchParams = useSearchParams();
-  const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const parsedFilters = qs.parse(searchParams.toString());
 
-  const parseUrlParams = (searchParams: URLSearchParams): Filters => {
-    return {
-      prices: {
-        priceFrom: searchParams.get("priceFrom"),
-        priceTo: searchParams.get("priceTo"),
-      },
-      selectedShopping: new Set(searchParams.getAll("shopping")),
-      selectedSeries: new Set(searchParams.getAll("series")),
-      selectedStorage: new Set(searchParams.getAll("storage")),
-    };
-  };
+  function getActiveFilters(obj: qs.ParsedQs): string[] {
+    const result: string | string[] = [];
 
-  const transformFiltersToCategories = (filters: Filters): string[] => {
-    const categories: string[] = [];
-
-    if (filters.prices.priceFrom || filters.prices.priceTo) {
-      const priceFrom = filters.prices.priceFrom || "0";
-      const priceTo = filters.prices.priceTo || "10000";
-      categories.push(`Price: ${priceFrom}$ - ${priceTo}$`);
+    for (const key in obj) {
+      if (typeof obj[key] === "string" && obj[key].includes(",")) {
+        result.push(...obj[key].split(",").map((item) => item.trim()));
+      } else if (obj[key]) {
+        result.push(String(obj[key]));
+      }
     }
 
-    const setToString = (set: Set<string>, prefix: string) => {
-      if (set.size > 0) {
-        return `${prefix}: ${Array.from(set).join(", ")}`;
-      }
-      return null;
-    };
+    return result;
+  }
 
-    const series = setToString(filters.selectedSeries, "Series");
-    const storage = setToString(filters.selectedStorage, "Storage");
-    const shopping = setToString(filters.selectedShopping, "Shopping");
+  const activeFilters = getActiveFilters(parsedFilters);
 
-    if (series) categories.push(series);
-    if (storage) categories.push(storage);
-    if (shopping) categories.push(shopping);
-
-    return categories;
-  };
-
-  const filters = useMemo(() => parseUrlParams(searchParams), [searchParams]);
-  const categoriesList = useMemo(
-    () => transformFiltersToCategories(filters),
-    [filters]
-  );
-
-  useEffect(() => {
-    setActiveFilters(categoriesList);
-  }, [categoriesList]);
-
+  console.log(parsedFilters);
   return (
     <div className="flex items-center gap-4">
       <span className="text-xl">
@@ -80,13 +38,13 @@ export const Categories: React.FC<Props> = () => {
           26 results
         </span>
       </span>
-      {activeFilters.map((category, index) => (
+      {activeFilters.map((item) => (
         <div
-          key={index}
+          key={item}
           className={cn("flex items-center h-9 px-7 bg-darkgrey rounded-md")}
         >
           <button className="flex gap-3 items-center">
-            {category} <X size={18} />
+            {item} <X size={18} />
           </button>
         </div>
       ))}
