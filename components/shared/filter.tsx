@@ -5,8 +5,9 @@ import { RangeSlider, Title, CheckboxFilterGroup } from "@/components/shared";
 import { cn } from "@/lib/utils";
 import { ChevronUp } from "lucide-react";
 import { Button, Input } from "../ui";
-import { useQuery, useSeries, useFilters } from "@/hooks";
+import { useQuery, useSeries } from "@/hooks";
 import { shoppingPhone } from "./constants";
+import { useFiltersContext } from "../../store/filters-store";
 
 interface Props {
   className?: string;
@@ -14,7 +15,7 @@ interface Props {
 
 export const Filter = ({ className }: Props) => {
   const { series, loading } = useSeries();
-  const filters = useFilters();
+  const { filters } = useFiltersContext();
 
   useQuery(filters);
 

@@ -1,4 +1,5 @@
 import { Container, Title, Filter, Topbar } from "@/components/shared";
+import { FiltersProvider } from "@/store/filters-store";
 import { ProductCard } from "@/components/shared/product-card";
 import { prisma } from "@/prisma/prisma-client";
 import { ProductItem } from "@prisma/client";
@@ -39,7 +40,7 @@ export default async function Home() {
   };
 
   return (
-    <>
+    <FiltersProvider>
       <Container>
         <Title text="Phones" size="lg" className="font-bold" />
       </Container>
@@ -73,6 +74,6 @@ export default async function Home() {
           </div>
         </div>
       </Container>
-    </>
+    </FiltersProvider>
   );
 }

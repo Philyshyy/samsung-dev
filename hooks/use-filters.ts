@@ -25,6 +25,7 @@ interface ReturnProps extends Filters {
   setStorage: (value: string) => void;
   setShopping: (value: string) => void;
   setSeries: (value: string) => void;
+  resetFilters: () => void;
 }
 
 export const useFilters = (): ReturnProps => {
@@ -63,6 +64,13 @@ export const useFilters = (): ReturnProps => {
     }));
   };
 
+  const resetFilters = () => {
+    selectedSeries.clear();
+    selectedShopping.clear();
+    selectedStorage.clear();
+    setPrices({ priceFrom: undefined, priceTo: undefined });
+  };
+
   return useMemo(
     () => ({
       selectedSeries,
@@ -73,6 +81,7 @@ export const useFilters = (): ReturnProps => {
       setStorage: toggleStorage,
       setSeries: toggleSeries,
       setShopping: toggleShopping,
+      resetFilters,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [selectedSeries, selectedShopping, selectedStorage, prices]

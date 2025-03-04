@@ -1,35 +1,18 @@
 "use client";
 
+import { getActiveFilters } from "@/hooks/get-active-filters";
 import { cn } from "@/lib/utils";
+import { useFiltersContext } from "@/store/filters-store";
 import { X } from "lucide-react";
-import { useSearchParams } from "next/navigation";
-import qs from "qs";
 
 interface Props {
   className?: string;
 }
 
 export const Categories: React.FC<Props> = () => {
-  const searchParams = useSearchParams();
-  const parsedFilters = qs.parse(searchParams.toString());
+  const { filters } = useFiltersContext();
+  const activeFilters = getActiveFilters(filters);
 
-  function getActiveFilters(obj: qs.ParsedQs): string[] {
-    const result: string | string[] = [];
-
-    for (const key in obj) {
-      if (typeof obj[key] === "string" && obj[key].includes(",")) {
-        result.push(...obj[key].split(",").map((item) => item.trim()));
-      } else if (obj[key]) {
-        result.push(String(obj[key]));
-      }
-    }
-
-    return result;
-  }
-
-  const activeFilters = getActiveFilters(parsedFilters);
-
-  console.log(parsedFilters);
   return (
     <div className="flex items-center gap-4">
       <span className="text-xl">
@@ -55,6 +38,7 @@ export const Categories: React.FC<Props> = () => {
             className={cn(
               "flex items-center text-CTA bg-background font-bold h-9 px-9 rounded-md gap-2"
             )}
+            onClick={filters.resetFilters}
           >
             Clear
           </button>
