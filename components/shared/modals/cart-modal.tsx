@@ -3,26 +3,26 @@
 import { Dialog } from "@/components/ui";
 import { DialogContent, DialogTitle } from "@/components/ui/dialog";
 import React from "react";
-import { Product } from "@prisma/client";
 import { useRouter } from "next/navigation";
-import { ProductForm } from "../product-form";
+import { CartModalForm } from "../cart-modal-form";
 import { cn } from "@/lib/utils";
+import { productFull } from "@/@types/prisma";
 
 interface Props {
-  product: Product;
+  product: productFull;
   className?: string;
 }
 
-export const ChooseProductModel: React.FC<Props> = ({ product, className }) => {
+export const CartModal: React.FC<Props> = ({ product, className }) => {
   const router = useRouter();
 
   return (
     <Dialog open={Boolean(product)} onOpenChange={() => router.back()}>
-      <DialogContent className={cn("max-w-[912px]  min-h-[580px]")}>
+      <DialogContent className={cn("max-w-[912px]  min-h-[580px]", className)}>
         <DialogTitle className="text-[50px] font-bold uppercase">
           cart and order
         </DialogTitle>
-        <ProductForm product={product} />
+        <CartModalForm product={product} />
       </DialogContent>
     </Dialog>
   );

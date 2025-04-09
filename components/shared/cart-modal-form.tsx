@@ -9,7 +9,7 @@ interface Props {
   className?: string;
 }
 
-export const ProductForm: React.FC<Props> = ({ product, className }) => {
+export const CartModalForm: React.FC<Props> = ({ product, className }) => {
   return (
     <div className={cn("", className)}>
       <div className="relative bg-lightgrey pl-6 pt-4 w-full h-[300px] rounded-[25px]">

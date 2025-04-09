@@ -1,5 +1,4 @@
 import { Container, Title } from "@/components/shared";
-import { ChooseDeviceVariant } from "@/components/shared/choose-device-variant";
 import { ProductImage } from "@/components/shared/product-image";
 import { prisma } from "@/prisma/prisma-client";
 import { notFound } from "next/navigation";
@@ -28,7 +27,6 @@ export default async function ProductPage({
         <ProductImage imageUrl={"/productImg.png"} />
         <div className="ml-5">
           <Title text={product.name} size="md" className="font-bold" />
-          <ChooseDeviceVariant product={product} />
         </div>
       </div>
     </Container>
