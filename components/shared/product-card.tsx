@@ -3,6 +3,7 @@ import React from "react";
 import { Title } from "./title";
 import { Button } from "../ui";
 import { CircleHelp } from "lucide-react";
+import { Badge } from "./badge";
 
 export interface ProductData {
   id: number;
@@ -27,9 +28,7 @@ export const ProductCard: React.FC<ProductData> = ({
     <div className={className}>
       <div className="w-72 bg-lightgrey rounded-md shadow-default py-7 px-5">
         <div className="flex justify-between">
-          <div className="flex justify-center items-center py-2 px-5 w-36 h-8 bg-background rounded-lg shadow-default font-[14px]">
-            From {price}$
-          </div>
+          <Badge text={`From ${price}$`} />
           <CircleHelp size={24} className="self-center" />
         </div>
         <img
@@ -57,9 +56,11 @@ export const ProductCard: React.FC<ProductData> = ({
           <Link href={`/product/${id}`}>
             <Button variant="default">Learn more</Button>{" "}
           </Link>
-          <Button variant="outline" className="w-24">
-            Buy
-          </Button>
+          <Link href={`/cart/`}>
+            <Button variant="outline" className="w-24">
+              Buy
+            </Button>
+          </Link>
         </div>
       </div>
     </div>

@@ -5,7 +5,7 @@ import { prisma } from "@/prisma/prisma-client";
 import { ProductItem } from "@prisma/client";
 import { Suspense } from "react";
 
-export default async function Home() {
+async function Home() {
   const categories = await prisma.category.findMany({
     include: {
       products: {
@@ -77,3 +77,5 @@ export default async function Home() {
     </FiltersProvider>
   );
 }
+
+export default Home;

@@ -57,7 +57,7 @@ export const SearchInput: React.FC = () => {
         </div>
 
         {/* Выпадающее меню */}
-        {products.length > 0 && (
+        {focused && products.length > 0 && (
           <div
             className={cn(
               "absolute left-0 w-full border border-foreground bg-white rounded-xl mt-2 shadow-md transition-all duration-200 transform opacity-0 scale-95",

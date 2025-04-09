@@ -1,12 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { RangeSlider, Title, CheckboxFilterGroup } from "@/components/shared";
 import { cn } from "@/lib/utils";
 import { ChevronUp } from "lucide-react";
 import { Button, Input } from "../ui";
 import { useQuery, useSeries } from "@/hooks";
-import { shoppingPhone } from "./constants";
+import { shoppingPhone, shoppingStorage } from "./constants";
 import { useFiltersContext } from "../../store/filters-store";
 
 interface Props {
@@ -17,6 +17,11 @@ export const Filter = ({ className }: Props) => {
   const { series, loading } = useSeries();
   const { filters } = useFiltersContext();
 
+  const [tempPrices, setTempPrices] = useState({
+    priceFrom: filters.prices.priceFrom || 0,
+    priceTo: filters.prices.priceTo || 10000,
+  });
+
   useQuery(filters);
 
   const items = series.map((item) => ({
@@ -24,9 +29,16 @@ export const Filter = ({ className }: Props) => {
     value: String(item.id),
   }));
 
-  const updatePrices = (prices: number[]) => {
-    filters.setPrices("priceFrom", prices[0]);
-    filters.setPrices("priceTo", prices[1]);
+  const handleInputChange = (key: "priceFrom" | "priceTo", value: number) => {
+    setTempPrices((prev) => ({
+      ...prev,
+      [key]: Math.min(10000, Math.max(0, value)),
+    }));
+  };
+
+  const handleSubmit = () => {
+    filters.setPrices("priceFrom", tempPrices.priceFrom);
+    filters.setPrices("priceTo", tempPrices.priceTo);
   };
 
   return (
@@ -62,9 +74,9 @@ export const Filter = ({ className }: Props) => {
               placeholder="From"
               min={0}
               max={10000}
-              value={String(filters.prices.priceFrom)}
+              value={String(tempPrices.priceFrom)}
               onChange={(e) =>
-                filters.setPrices(
+                handleInputChange(
                   "priceFrom",
                   Math.min(10000, Math.max(0, Number(e.target.value)))
                 )
@@ -76,9 +88,9 @@ export const Filter = ({ className }: Props) => {
               placeholder="To"
               min={0}
               max={10000}
-              value={String(filters.prices.priceTo)}
+              value={String(tempPrices.priceTo)}
               onChange={(e) =>
-                filters.setPrices(
+                handleInputChange(
                   "priceTo",
                   Math.min(10000, Math.max(0, Number(e.target.value)))
                 )
@@ -90,14 +102,17 @@ export const Filter = ({ className }: Props) => {
             min={0}
             max={10000}
             step={50}
-            value={[
-              filters.prices.priceFrom || 0,
-              filters.prices.priceTo || 10000,
-            ]}
-            onValueChange={updatePrices}
+            value={[tempPrices.priceFrom || 0, tempPrices.priceTo || 10000]}
+            onValueChange={(prices) => {
+              setTempPrices({ priceFrom: prices[0], priceTo: prices[1] });
+            }}
           />
 
-          <Button variant="secondary" className="w-44 mt-4">
+          <Button
+            variant="secondary"
+            className="w-44 mt-4"
+            onClick={handleSubmit}
+          >
             Submit
           </Button>
           <hr className="w-full h-[1px] bg-darkgrey mt-5" />
@@ -118,20 +133,7 @@ export const Filter = ({ className }: Props) => {
           title="Storage"
           name="storage"
           limit={3}
-          items={[
-            {
-              text: "256 Gb",
-              value: "1",
-            },
-            {
-              text: "512 Gb",
-              value: "2",
-            },
-            {
-              text: "1024 Gb",
-              value: "3",
-            },
-          ]}
+          items={shoppingStorage}
           loading={loading}
           onClickCheckbox={filters.setStorage}
           selected={filters.selectedStorage}

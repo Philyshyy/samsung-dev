@@ -1,7 +1,5 @@
-import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { Header } from "@/components/shared/header";
 
 const samsung = localFont({
   src: [
@@ -24,23 +22,14 @@ const samsung = localFont({
   variable: "--font-samsung",
 });
 
-export const metadata: Metadata = {
-  title: "Samsung | Главная",
-};
-
-export default function RootLayout({
+export default function MainLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
-      <body className={`${samsung.variable} antialiased`}>
-        <main className="min-h-screen">
-          <Header />
-          {children}
-        </main>
-      </body>
+      <body className={`${samsung.variable} antialiased`}>{children}</body>
     </html>
   );
 }

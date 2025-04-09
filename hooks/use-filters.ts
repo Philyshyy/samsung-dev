@@ -20,11 +20,12 @@ export interface Filters {
   prices: PriceProps;
 }
 
-interface ReturnProps extends Filters {
+export interface ReturnProps extends Filters {
   setPrices: (name: keyof PriceProps, value: number) => void;
   setStorage: (value: string) => void;
   setShopping: (value: string) => void;
   setSeries: (value: string) => void;
+  clearFilter: (filter: Set<string> | PriceProps) => void;
   resetFilters: () => void;
 }
 
@@ -64,6 +65,11 @@ export const useFilters = (): ReturnProps => {
     }));
   };
 
+  const clearFilter = (filter: Set<string> | PriceProps) => {
+    if (filter instanceof Set) filter.clear();
+    else setPrices({});
+  };
+
   const resetFilters = () => {
     selectedSeries.clear();
     selectedShopping.clear();
@@ -81,6 +87,7 @@ export const useFilters = (): ReturnProps => {
       setStorage: toggleStorage,
       setSeries: toggleSeries,
       setShopping: toggleShopping,
+      clearFilter,
       resetFilters,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps

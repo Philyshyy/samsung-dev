@@ -19,7 +19,7 @@ html {
     --darkgrey: 0 0% 88%;
     --foreground: 0 0% 8%;
     --hover: 233 67% 80%;
-    
+
     --card: 0 0% 100%;
     --card-foreground: 20 14.3% 4.1%;
 
@@ -49,12 +49,14 @@ html {
 }
 
 * {
+  box-sizing: border-box;
   font-family: var(--font-samsung), sans-serif;
   font-weight: 600;
 }
 
 .scrollbar::-webkit-scrollbar {
   width: 4px;
+  height: 4px;
 }
 
 .scrollbar::-webkit-scrollbar-track {
