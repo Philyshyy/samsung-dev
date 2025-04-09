@@ -1,7 +1,7 @@
 "use client";
 
+import { useFilters } from "@/hooks/use-filters";
 import { createContext, ReactNode, useContext } from "react";
-import { useFilters } from "@/hooks";
 
 export interface FiltersContextType {
   filters: ReturnType<typeof useFilters>;
